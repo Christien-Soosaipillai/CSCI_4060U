@@ -1,0 +1,11 @@
+1.Make Critical regions as smal as possible
+  why? because they are slow
+2.Minimize/ optimize use of barriers
+3.Avoid the ordered construct, except when needed
+4.Maximize parallel regions, avoid small ones
+(do as much work in parallel regions as possible)
+5.Avoid parallel inner loop regions
+6.Avoid uneven load balancing()
+7.combine parallel loops when possible
+8.why is critical faster than atomic
+9.identify race condition

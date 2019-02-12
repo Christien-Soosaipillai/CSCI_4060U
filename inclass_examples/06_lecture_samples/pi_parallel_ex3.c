@@ -5,6 +5,15 @@
 static long num_steps = 10000000;
 double step;
 
+/////////////////////////////////////////////////////
+
+/* PURPOSE OF PROGRAM
+Parallelization of the serial pi program
+using the parallel directive and a critical region.
+*/
+
+/////////////////////////////////////////////////////
+
 int main() {
   double x;
   double pi = 0.0; //shared variable accessed by all threads in a critical region
@@ -31,15 +40,13 @@ int main() {
     for (int i=thread_id; i < num_steps; i = i + t_count) {
       //calculate height
       x = (i+0.5)*step;
-      sum = sum +  //sum F(x)
-
-      #pragma omp critical
-      {
-        pi += 4/(1.0+x*x);; //ensure that only one thread at a time
-                          //can access the shared variable pi
-      }
+      sum = sum + 4/(1.0+x*x); //sum F(x)
+    }
+    #pragma omp critical
+    {
+      pi += step * sum; //ensure that only one thread at a time
+                        //can access the shared variable pi
     }
   }
-  pi *=
   printf("pi = %f", pi);
 }
