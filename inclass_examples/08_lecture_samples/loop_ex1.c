@@ -21,6 +21,7 @@ int main() {
   #pragma omp parallel
   {
     int thread_id = omp_get_thread_num();
+//    printf
     #pragma omp for
     for (i = 0; i < NUM_THREADS*3; i++) {
       result[i] = 5*6*7 +i;

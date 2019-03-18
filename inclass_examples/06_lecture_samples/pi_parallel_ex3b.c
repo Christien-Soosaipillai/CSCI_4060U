@@ -41,7 +41,10 @@ int main() {
       x = (i+0.5)*step;
       #pragma omp critical
       {
-        pi += 4/(1.0+x*x); //sum F(x)
+        //sum F(x), This is dangerous because every thread has to wait
+        //for the lock to be released before updating pi resulting in
+        //lots of overhead.
+        pi += 4/(1.0+x*x); 
       }
     }
   }

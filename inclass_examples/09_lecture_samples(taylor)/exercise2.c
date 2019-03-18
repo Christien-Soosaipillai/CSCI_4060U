@@ -1,25 +1,35 @@
 #include <stdio.h>
 #include <omp.h>
-#define NUM_THREADS 3
 
-int main(){
+#define NUM_THREADS 4
 
-  int i, j, k;
+int main() {
+  int i =0;
+  int j=0;
+double result[NUM_THREADS][NUM_THREADS];
 
-  double result[NUM_THREADS][NUM_THREADS][NUM_THREADS];
+omp_set_num_threads(NUM_THREADS);
+//for perfectly rectuangular nested loops
+//we can parallelize them using a collapse clause
+//if you don't use collapse the below code will
+//only parallelize the outer loop
+#pragma omp parallel for collapse(2) private(i,j)
+//private clause allows us to specify local copies of variables
+//for each thread
+  for (i=0;i< NUM_THREADS; i++) {
+    for (j=0; j< NUM_THREADS; j++) {
+      result[i][j] = i * j;
+      printf("Index [%d,%d] = %f \n", i, j, result[i][j]);
 
-  omp_set_num_threads(NUM_THREADS);
-
-  #pragma omp for collapse(2) private(i,j,k)
-  for(i = 0; i < NUM_THREADS; i++){
-
-    for(j = 0; j < NUM_THREADS; j++){
-
-      for( k = 0; k < NUM_THREADS; k++){
-      result[i][j][k] = i * j * k;
-      printf("Index[%d,%d,%d] = %f \n", i, j, k, result[i][j][k]);
-      }
-    }
   }
-  return 0;
+}
+
+// // Sequential  version:
+// for (i=0;i< NUM_THREADS; i++) {
+//     for (j=0; j< NUM_THREADS; j++) {
+//       result[i][j] = i * j;
+//       printf("Index [%d,%d] = %f \n", i, j, result[i][j]);
+//
+//   }
+// }
 }

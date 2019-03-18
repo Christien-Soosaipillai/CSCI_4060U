@@ -36,8 +36,8 @@ int main() {
   }
 
   //Do stuff
-  //atomic_example(x, y, index, 10000);
-  critical_example(x, y, index, 10000);
+  atomic_example(x, y, index, 10000);
+  //critical_example(x, y, index, 10000);
 
 
   //Print results

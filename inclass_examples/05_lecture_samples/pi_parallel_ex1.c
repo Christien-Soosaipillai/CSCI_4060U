@@ -34,9 +34,14 @@ int main() {
 
     thread_id = omp_get_thread_num();
     t_count = omp_get_num_threads();
+
+    //once we have encountered the 0th thread assign the thread_count
     if (thread_id == 0) {
       thread_count = t_count;
+      printf("inside if statement\n");
+
     }
+    printf("thread_id = %i\n", thread_id);
     //calculate the summation of F(x)
     // (i.e. sum of rectangles)
     //in the approximation of pi
@@ -47,10 +52,14 @@ int main() {
       sum[thread_id] = sum[thread_id] + 4/(1.0+x*x); //sum F(x)
     }
   }
+
+  printf("Calculating pi...value of thread_count = %i\n", thread_count);
+
+
   pi=0.0;
   for (int i=0; i < thread_count; i++) {
     pi += step * sum[i];
 
   }
-  printf("pi = %f", pi);
+  printf("The value of pi is = %f\n", pi);
 }

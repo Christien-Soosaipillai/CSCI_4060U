@@ -8,7 +8,7 @@
   #define omp_get_thread_num() 0
 #endif
 
-#define NUM_THREADS 16
+#define NUM_THREADS 4
 
 int calcGrade(int i);
 int calcOtherAvg(int i, int *g);
@@ -34,14 +34,19 @@ int main() {
     int thread_id;
     thread_id = omp_get_thread_num();
     Grades[thread_id] = calcGrade(thread_id);
+
+    //we put the barrier here so we can wait for
+    //all the grades to be calculated first, if we
+    //don't wait then are going to get messed up values
+    //when we calculate the Averages[thread_id] 
     #pragma omp barrier
     Averages[thread_id] = calcOtherAvg(thread_id, Grades);
-    printf ("Student %d\tGrade %d\tAverage %d\n",
-            thread_id, Grades[thread_id], Averages[thread_id]);
+    //printf ("Student %d\tGrade %d\tAverage %d\n",
+    //        thread_id+1, Grades[thread_id], Averages[thread_id]);
   }
 }
 
-
+//returns a random grade
 int calcGrade(int i) {
   srand(time(NULL));
   /*for (int j = 0; j < i; j++) {
@@ -50,10 +55,13 @@ int calcGrade(int i) {
   return (rand()%101);
 }
 
+//
 int calcOtherAvg(int i, int *g) {
   float sum = 0;
+  printf("entering loop for thread %i\n",i+1);
   for (int j=0; j < omp_get_num_threads(); j++) {
     if (j != i) {
+      printf("value in calcOtherAvg: %i\n",g[j]);
       sum += g[j];
     }
   }

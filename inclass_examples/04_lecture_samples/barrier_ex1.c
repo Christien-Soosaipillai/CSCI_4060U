@@ -6,7 +6,7 @@
   #define omp_get_thread_num() 0
 #endif
 
-#define NUM_THREADS 16
+#define NUM_THREADS 2
 
 /////////////////////////////////////////////////////
 
@@ -24,6 +24,8 @@ int main() {
   {
     int thread_id;
     thread_id = omp_get_thread_num();
+
+    //if thread id < 1, meaning the first thread, go in the loop
     if (thread_id < omp_get_num_threads()/2) {
       for (int i=0; i< 10000000; i++) {
 

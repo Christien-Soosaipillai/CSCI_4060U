@@ -11,7 +11,7 @@ int main(){
 
   #pragma omp parallel
   {
-    #pragma omp for
+    #pragma omp for 
     for(i = 0; i < NUM_THREADS; i++){
       printf("start of loop 1, iteration %d\n", i);
       result[i] = 6 * 6 * 6 + i;

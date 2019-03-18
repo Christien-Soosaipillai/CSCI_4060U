@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <omp.h>
 
-#define NUM_THREADS 8
+#define NUM_THREADS 2
 #define PAD 8
 //Padding is necessary due to cache line size (64 bytes)
 //It prevents "false sharing" -- when data elements on the same
@@ -15,8 +15,9 @@ double step;
 /* PURPOSE OF PROGRAM
 improving the performance of pi_parallel_v1.c.
 The original program suffers from “false sharing” between
-array elements on the same cache line. This program uses
-an architecture specific solution (padding) to solve the problem.
+array elements on the same cache line making the program make unwanted
+copies. This program uses an architecture specific
+solution (padding) to solve the problem.
 */
 
 /////////////////////////////////////////////////////
@@ -46,8 +47,18 @@ int main() {
     // (i.e. sum of rectangles)
     //in the approximation of pi
     sum[thread_id][0]=0.0;
+
+
+    //order of for loop:
+    //1st: initialize i = thread_id
+    //2nd: if the condition is satisfied we enter the for loop
+    //3rd: finally we do the increment step after entering the loop
+
     for (int i=thread_id; i < num_steps; i = i + t_count) {
       //calculate height
+
+      //printf("thread id[%i]value of i = %i\n", thread_id, i);
+
       x = (i+0.5)*step;
       sum[thread_id][0] = sum[thread_id][0] + 4/(1.0+x*x); //sum F(x)
     }
