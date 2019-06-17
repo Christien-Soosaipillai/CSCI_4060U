@@ -29,7 +29,7 @@ int main () {
     //                    void *(*start_routine) (void *), void *arg);
 
     error = pthread_create(&threads[i], NULL, hello_world,
-                          (void *) &thread_data_array[i]);
+                          (void *) thread_data_array[i]);
     if (error) {
       printf("ERROR %d\n", error);
       exit(-1);

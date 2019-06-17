@@ -39,7 +39,7 @@ int main() {
                           void *arg);
     */
     int error = pthread_create(&threads[i], NULL,
-                               hello_world, (void *)i);
+                               hello_world, (void *) i);
     if (error) {
       printf("ERROR\n");
       exit(-1);
